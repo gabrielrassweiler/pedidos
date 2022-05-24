@@ -1,4 +1,6 @@
-# pedidos
+# Pedidos
+
+Repositório para fins de aprendizado e realização de um trabalho para faculdade
 
 ## Project setup
 ```
