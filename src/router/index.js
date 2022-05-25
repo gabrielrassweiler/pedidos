@@ -19,7 +19,12 @@ const routes = [
   {
     path: '/cadastra-pessoa',
     name: 'CadastraPessoa',
-    component: () => import('@/views/CadastraPessoa.vue')
+    component: () => import('@/views/CadastraAlteraPessoa.vue')
+  },
+  {
+    path: '/altera-pessoa',
+    name: 'AlteraPessoa',
+    component: () => import('@/views/CadastraAlteraPessoa.vue')
   }
 ]
 
