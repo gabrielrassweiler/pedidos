@@ -52,7 +52,6 @@ export default createStore({
         .get('http://localhost:8083/pessoa')
         .then(response => {
           commit('loadPerson', response.data);
-          console.log(this.state.pessoas)
         })
     }
   }

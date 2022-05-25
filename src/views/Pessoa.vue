@@ -24,14 +24,25 @@
       <div class="col-3 mt-2">{{ pessoa.email }}</div>
       <div class="col-1 mt-2">{{ pessoa.idade }}</div>
       <div class="col-2 mt-2">{{ pessoa.cpf }}</div>
-      <div class="col-1 mt-2"><font color="green">Alterar</font></div>
-      <div class="col-1 mt-2"><font color="red">Remover</font></div>
+      <div class="col-1 mt-2 color-green">
+        <a
+          href="/altera-pessoa"
+          @click="alteraPessoa(this.pessoas.filter(person => person.id === pessoa.id)[0])"
+        >Alterar
+        </a>
+      </div>
+      <div
+        class="col-1 mt-2 color-red"
+        @click="removePessoa(pessoa.id)"
+      >Remover
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import { mapState } from 'vuex'
+  import axios from "axios";
 
   export default {
     // eslint-disable-next-line vue/multi-word-component-names
@@ -42,6 +53,20 @@
     computed: mapState([
       'pessoas'
     ]),
+    methods: {
+      async removePessoa(pessoaID) {
+        if (confirm('Deseja remover a pessoa de ID ' + pessoaID + ' ?')) {
+          axios
+            .get('http://localhost:8083/pessoa/remover/' + pessoaID)
+            .then(response => {
+              console.log(response)
+            })
+        }
+      },
+      async alteraPessoa(pessoa) {
+        localStorage.setItem('alteraPessoa', JSON.stringify(pessoa));
+      }
+    }
   }
 </script>
 
@@ -55,4 +80,26 @@
   text-align: center;
   border-bottom: 1px solid lightgray;
 }
+
+.color-green {
+  a {
+    color: green;
+    text-decoration: none;
+  }
+}
+.color-green:hover {
+  a {
+    cursor: pointer;
+    color: #659252;
+  }
+}
+
+.color-red {
+  color: red;
+}
+.color-red:hover {
+  cursor: pointer;
+  color: #e06666;
+}
+
 </style>
