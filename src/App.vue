@@ -1,8 +1,9 @@
 <template>
   <div id="nav">
-    <router-link to="/" style="margin-right: 20px">INÍCIO</router-link>
+    <router-link to="/" style="margin-right: 18px">INÍCIO</router-link>
     <router-link to="/basket" style="margin-right: 18px">CARRINHO ({{this.productsInBag.length}})</router-link>
-    <router-link to="/pessoa">PESSOA</router-link>
+    <router-link to="/pessoa" style="margin-right: 18px">PESSOA</router-link>
+    <router-link to="/categoria">CATEGORIA</router-link>
   </div>
   <router-view/>
 </template>

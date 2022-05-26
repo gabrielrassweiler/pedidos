@@ -25,6 +25,21 @@ const routes = [
     path: '/altera-pessoa',
     name: 'AlteraPessoa',
     component: () => import('@/views/CadastraAlteraPessoa.vue')
+  },
+  {
+    path: '/categoria',
+    name: 'Categoria',
+    component: () => import('@/views/Categoria.vue')
+  },
+  {
+    path: '/cadastra-categoria',
+    name: 'CadastraCategoria',
+    component: () => import('@/views/CadastraAlteraCategoria.vue')
+  },
+  {
+    path: '/altera-categoria',
+    name: 'AlteraCategoria',
+    component: () => import('@/views/CadastraAlteraCategoria.vue')
   }
 ]
 
