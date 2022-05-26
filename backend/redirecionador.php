@@ -1,6 +1,7 @@
 <?php
 
 include './app/controller/PessoaController.php';
+include './app/controller/CategoriaController.php';
 
 class redirecionador {
     private $rotasPermitidas;
@@ -17,19 +18,12 @@ class redirecionador {
             echo json_encode([false, 'Rota incorreta, entre em contato com o administrador do sistema']);
         }
 
-        $controller = new PessoaController();
         switch ($controllerRota[1]) {
-            case 'listar':
-                $controller->listar();
+            case 'pessoa':
+                $this->pessoa($controllerRota);
                 break;
-            case 'cadastrar':
-                $controller->cadastrar($controllerRota[2]);
-                break;
-            case 'remover':
-                $controller->remover($controllerRota[2]);
-                break;
-            case 'atualizar':
-                $controller->atualizar($controllerRota[2]);
+            case 'categoria':
+                $this->categoria($controllerRota);
                 break;
         }
     }
@@ -49,14 +43,52 @@ class redirecionador {
             }
 
             $controllerRota = explode('@', $permiteRota);
-            return [true, $controllerRota[1], $paramRota[3]];
+            return [true, $paramRota[1], $controllerRota[1], $paramRota[3]];
         } else {
             $permiteRota = $this->rotasPermitidas[$rota];
             if (!$permiteRota) {
                 return [false];
             }
             $controllerRota = explode('@', $permiteRota);
-            return [true, $controllerRota[1]];
+            return [true, $paramRota[1], $controllerRota[1]];
+        }
+    }
+
+    public function pessoa($controllerRota)
+    {
+        $controller = new PessoaController();
+        switch ($controllerRota[2]) {
+            case 'listar':
+                $controller->listar();
+                break;
+            case 'cadastrar':
+                $controller->cadastrar($controllerRota[3]);
+                break;
+            case 'remover':
+                $controller->remover($controllerRota[3]);
+                break;
+            case 'atualizar':
+                $controller->atualizar($controllerRota[3]);
+                break;
+        }
+    }
+
+    public function categoria($controllerRota)
+    {
+        $controller = new CategoriaController();
+        switch ($controllerRota[2]) {
+            case 'listar':
+                $controller->listar();
+                break;
+            case 'cadastrar':
+                $controller->cadastrar($controllerRota[3]);
+                break;
+            case 'remover':
+                $controller->remover($controllerRota[3]);
+                break;
+            case 'atualizar':
+                $controller->atualizar($controllerRota[3]);
+                break;
         }
     }
 }
