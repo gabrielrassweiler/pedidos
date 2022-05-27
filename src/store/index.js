@@ -7,6 +7,7 @@ export default createStore({
     productsInBag: [],
     pessoas: [],
     categorias: [],
+    produtos: [],
   },
   mutations: {
     loadProducts (state, products) {
@@ -28,6 +29,9 @@ export default createStore({
     },
     loadCategory (state, categorias) {
       state.categorias = categorias;
+    },
+    loadProduct (state, produtos) {
+      state.produtos = produtos;
     }
   },
   actions: {
@@ -63,6 +67,13 @@ export default createStore({
         .get('http://localhost:8083/categoria')
         .then(response => {
           commit('loadCategory', response.data);
+        })
+    },
+    loadProduct({ commit }) {
+      axios
+        .get('http://localhost:8083/produto')
+        .then(response => {
+          commit('loadProduct', response.data);
         })
     }
   }

@@ -40,6 +40,21 @@ const routes = [
     path: '/altera-categoria',
     name: 'AlteraCategoria',
     component: () => import('@/views/CadastraAlteraCategoria.vue')
+  },
+  {
+    path: '/produto',
+    name: 'Produto',
+    component: () => import('@/views/Produto.vue')
+  },
+  {
+    path: '/cadastra-produto',
+    name: 'CadastraProduto',
+    component: () => import('@/views/CadastraAlteraProduto.vue')
+  },
+  {
+    path: '/altera-produto',
+    name: 'AlteraProduto',
+    component: () => import('@/views/CadastraAlteraProduto.vue')
   }
 ]
 
