@@ -1,9 +1,10 @@
 <template>
   <div id="nav">
-    <router-link to="/" style="margin-right: 18px">INÍCIO</router-link>
-    <router-link to="/basket" style="margin-right: 18px">CARRINHO ({{this.productsInBag.length}})</router-link>
-    <router-link to="/pessoa" style="margin-right: 18px">PESSOA</router-link>
-    <router-link to="/categoria">CATEGORIA</router-link>
+    <router-link to="/" class="margin-18">INÍCIO</router-link>
+    <router-link to="/basket" class="margin-18">CARRINHO ({{this.productsInBag.length}})</router-link>
+    <router-link to="/pessoa" class="margin-18">PESSOA</router-link>
+    <router-link to="/categoria" class="margin-18">CATEGORIA</router-link>
+    <router-link to="/produto">PRODUTO</router-link>
   </div>
   <router-view/>
 </template>
@@ -29,6 +30,10 @@ export default {
   color: #2c3e50;
   max-width: 1280px;
   margin: 80px auto;
+}
+
+.margin-18 {
+  margin-right: 18px
 }
 
 #nav {

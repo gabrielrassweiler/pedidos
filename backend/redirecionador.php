@@ -2,6 +2,7 @@
 
 include './app/controller/PessoaController.php';
 include './app/controller/CategoriaController.php';
+include './app/controller/ProdutoController.php';
 
 class redirecionador {
     private $rotasPermitidas;
@@ -24,6 +25,9 @@ class redirecionador {
                 break;
             case 'categoria':
                 $this->categoria($controllerRota);
+                break;
+            case 'produto':
+                $this->produto($controllerRota);
                 break;
         }
     }
@@ -57,25 +61,23 @@ class redirecionador {
     public function pessoa($controllerRota)
     {
         $controller = new PessoaController();
-        switch ($controllerRota[2]) {
-            case 'listar':
-                $controller->listar();
-                break;
-            case 'cadastrar':
-                $controller->cadastrar($controllerRota[3]);
-                break;
-            case 'remover':
-                $controller->remover($controllerRota[3]);
-                break;
-            case 'atualizar':
-                $controller->atualizar($controllerRota[3]);
-                break;
-        }
+        $this->redirecionaController($controller, $controllerRota);
     }
 
     public function categoria($controllerRota)
     {
         $controller = new CategoriaController();
+        $this->redirecionaController($controller, $controllerRota);
+    }
+
+    public function produto($controllerRota)
+    {
+        $controller = new ProdutoController();
+        $this->redirecionaController($controller, $controllerRota);
+    }
+
+    public function redirecionaController($controller, $controllerRota)
+    {
         switch ($controllerRota[2]) {
             case 'listar':
                 $controller->listar();

@@ -10,4 +10,9 @@ $rota['/categoria/cadastrar'] = 'CategoriaController@cadastrar';
 $rota['/categoria/remover'] = 'CategoriaController@remover';
 $rota['/categoria/atualizar'] = 'CategoriaController@atualizar';
 
+$rota['/produto'] = 'ProdutoController@listar';
+$rota['/produto/cadastrar'] = 'ProdutoController@cadastrar';
+$rota['/produto/remover'] = 'ProdutoController@remover';
+$rota['/produto/atualizar'] = 'ProdutoController@atualizar';
+
 return $rota;
