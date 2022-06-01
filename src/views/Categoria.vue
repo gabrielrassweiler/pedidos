@@ -55,12 +55,12 @@ export default {
         axios
           .get(process.env.VUE_APP_BASE_ROUTE + 'categoria/remover/' + categoriaID)
           .then(response => {
+            window.location.reload();
             console.log(response)
           })
       }
     },
     async alteraCategoria(categoria) {
-      console.log(categoria)
       localStorage.setItem('alteraCategoria', JSON.stringify(categoria));
     }
   }

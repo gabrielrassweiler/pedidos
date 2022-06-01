@@ -66,11 +66,12 @@
         if (!valido[0]) {
           return alert(valido[1]);
         }
-        const params = this.montaParamsRequest();
+        const params = await this.montaParamsRequest();
 
         axios
           .get(process.env.VUE_APP_BASE_ROUTE + 'categoria/cadastrar/' + params)
           .then(response => {
+            location.href = '/categoria'
             console.log(response)
           })
       },
@@ -79,19 +80,24 @@
         if (!valido[0]) {
           return alert(valido[1]);
         }
-        const params = await this.montaParamsRequest();
+        const params = await this.montaParamsRequest(true);
 
         axios
           .get(process.env.VUE_APP_BASE_ROUTE + 'categoria/atualizar/' + params)
           .then(response => {
+            location.href = '/categoria'
             console.log(response)
           })
       },
-      async montaParamsRequest() {
+      async montaParamsRequest(alteraCategoria = false) {
         const params = {
-          id: this.id,
           descricao: this.descricao,
           modalidade: this.modalidade
+        }
+
+        // Validação pois no cadastro nao manda com id
+        if (alteraCategoria) {
+          params['id'] = this.id;
         }
 
         return Object.keys(params)

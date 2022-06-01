@@ -120,11 +120,12 @@
         if (!valido[0]) {
           return alert(valido[1]);
         }
-        const params = this.montaParamsRequest();
+        const params = await this.montaParamsRequest();
 
         axios
           .get(process.env.VUE_APP_BASE_ROUTE + 'pessoa/cadastrar/' + params)
           .then(response => {
+            location.href = '/pessoa'
             console.log(response)
           })
       },
@@ -133,17 +134,17 @@
         if (!valido[0]) {
           return alert(valido[1]);
         }
-        const params = await this.montaParamsRequest();
+        const params = await this.montaParamsRequest(true);
 
         axios
           .get(process.env.VUE_APP_BASE_ROUTE + 'pessoa/atualizar/' + params)
           .then(response => {
+            location.href = '/pessoa'
             console.log(response)
           })
       },
-      async montaParamsRequest() {
+      async montaParamsRequest(alteraPessoa = false) {
         const params = {
-          id: this.id,
           nome: this.nome,
           sexo: this.sexo,
           idade: this.idade,
@@ -152,6 +153,11 @@
           email: this.email.replaceAll('.', '!'),
           telefone: this.telefone,
           cep: this.cep,
+        }
+
+        // Validação pois no cadastro nao manda com id
+        if (alteraPessoa) {
+          params['id'] = this.id;
         }
 
         return Object.keys(params)

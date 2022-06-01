@@ -59,6 +59,7 @@
           axios
             .get(process.env.VUE_APP_BASE_ROUTE + 'pessoa/remover/' + pessoaID)
             .then(response => {
+              window.location.reload();
               console.log(response)
             })
         }

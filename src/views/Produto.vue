@@ -59,6 +59,7 @@
           axios
             .get(process.env.VUE_APP_BASE_ROUTE + 'produto/remover/' + produtoID)
             .then(response => {
+              window.location.reload();
               console.log(response)
             })
         }
