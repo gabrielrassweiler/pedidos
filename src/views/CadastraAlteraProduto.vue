@@ -7,11 +7,18 @@
 
         <div class="col-md-6">
           <label class="form-label">Categoria</label>
-          <input
-            type="text"
-            class="form-control"
+          <select
+            class="form-select"
             v-model="categoria"
-          />
+            required
+          >
+            <option value="" disabled selected>{{ textOption }}</option>
+            <option
+              v-for="categoria in categorias"
+              :key="categoria.id"
+            >{{ categoria.id }} - {{ categoria.descricao }}
+            </option>
+          </select>
         </div>
         <div class="col-md-6">
           <label class="form-label">Título</label>
@@ -62,36 +69,48 @@
     data() {
       return {
         id: '',
+        categorias: [],
         categoria: '',
         titulo: '',
         descricao: '',
         valor: 0,
-        rotinaAlterar: false
+        rotinaAlterar: false,
+        textOption: 'Seleciona uma opção...'
       }
     },
-    created() {
+    async created() {
+      await this.carregaCampoCategoria();
+
       if (this.$route.name === 'AlteraProduto') {
         this.rotinaAlterar = true;
         const produto = JSON.parse(localStorage.getItem("alteraProduto"));
 
         this.id = produto.id
-        this.categoria = produto.categoria
+        this.textOption = produto.categoria
         this.titulo = produto.titulo
         this.descricao = produto.descricao
         this.valor = produto.valor
       }
     },
     methods: {
+      async carregaCampoCategoria() {
+        axios
+          .get(process.env.VUE_APP_BASE_ROUTE + 'categoria')
+          .then(response => {
+            this.categorias = response.data;
+          })
+      },
       async cadastraProduto() {
         const valido = await this.validaCamposObrigatorios()
         if (!valido[0]) {
           return alert(valido[1]);
         }
-        const params = this.montaParamsRequest();
+        const params = await this.montaParamsRequest();
 
         axios
-          .get('http://localhost:8083/produto/cadastrar/' + params)
+          .get(process.env.VUE_APP_BASE_ROUTE + 'produto/cadastrar/' + params)
           .then(response => {
+            location.href = '/produto'
             console.log(response)
           })
       },
@@ -100,21 +119,35 @@
         if (!valido[0]) {
           return alert(valido[1]);
         }
-        const params = await this.montaParamsRequest();
+        const params = await this.montaParamsRequest(true);
 
         axios
-          .get('http://localhost:8083/produto/atualizar/' + params)
+          .get(process.env.VUE_APP_BASE_ROUTE + 'produto/atualizar/' + params)
           .then(response => {
+            location.href = '/produto'
             console.log(response)
           })
       },
-      async montaParamsRequest() {
+      async montaParamsRequest(alteraProduto = false) {
+        // Monta categoria apenas com o id para atualizar no banco
+        let categoria
+        if (this.categoria) {
+          categoria = this.categoria.slice(0, 1);
+        } else {
+          const produto = JSON.parse(localStorage.getItem('alteraProduto'));
+          categoria = produto.categoria.slice(0, 1);
+        }
+
         const params = {
-          id: this.id,
-          categoria: this.categoria,
+          categoria,
           titulo: this.titulo,
           descricao: this.descricao,
           valor: this.valor,
+        }
+
+        // Validação pois no cadastro nao manda com id
+        if (alteraProduto) {
+          params['id'] = this.id;
         }
 
         return Object.keys(params)
@@ -124,14 +157,11 @@
           .join('&')
       },
       async validaCamposObrigatorios() {
-        if (!this.categoria) {
-          return [false, 'Campo de categoria da produto não preenchido'];
-        }
         if (!this.titulo) {
-          return [false, 'Campo de titulo da produto não preenchido'];
+          return [false, 'Campo de titulo do produto não preenchido'];
         }
         if (!this.descricao) {
-          return [false, 'Campo de descricao da produto não preenchido'];
+          return [false, 'Campo de descricao do produto não preenchido'];
         }
         if (!this.valor) {
           return [false, 'Campo de valor do produto não preenchido'];
@@ -147,5 +177,15 @@
 fieldset {
   padding: 0 13px 13px 13px;
   box-shadow: rgba(70, 80, 90, 0.3) 0 0 0.25em, rgba(120, 150, 200, 0.09) 0 0.25em 1em;
+}
+
+select:required:invalid {
+  color: gray;
+}
+option[value=""][disabled] {
+  display: none;
+}
+option {
+  color: black;
 }
 </style>

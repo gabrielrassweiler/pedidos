@@ -55,10 +55,11 @@
     ]),
     methods: {
       async removeProduto(produtoID) {
-        if (confirm('Deseja remover a produto de ID ' + produtoID + ' ?')) {
+        if (confirm('Deseja remover o produto de ID ' + produtoID + ' ?')) {
           axios
-            .get('http://localhost:8083/produto/remover/' + produtoID)
+            .get(process.env.VUE_APP_BASE_ROUTE + 'produto/remover/' + produtoID)
             .then(response => {
+              window.location.reload();
               console.log(response)
             })
         }

@@ -57,21 +57,21 @@ export default createStore({
     },
     loadPerson({ commit }) {
       axios
-        .get('http://localhost:8083/pessoa')
+        .get(process.env.VUE_APP_BASE_ROUTE + 'pessoa')
         .then(response => {
           commit('loadPerson', response.data);
         })
     },
     loadCategory({ commit }) {
       axios
-        .get('http://localhost:8083/categoria')
+        .get(process.env.VUE_APP_BASE_ROUTE + 'categoria')
         .then(response => {
           commit('loadCategory', response.data);
         })
     },
     loadProduct({ commit }) {
       axios
-        .get('http://localhost:8083/produto')
+        .get(process.env.VUE_APP_BASE_ROUTE + 'produto')
         .then(response => {
           commit('loadProduct', response.data);
         })

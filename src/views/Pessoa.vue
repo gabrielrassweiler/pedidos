@@ -57,8 +57,9 @@
       async removePessoa(pessoaID) {
         if (confirm('Deseja remover a pessoa de ID ' + pessoaID + ' ?')) {
           axios
-            .get('http://localhost:8083/pessoa/remover/' + pessoaID)
+            .get(process.env.VUE_APP_BASE_ROUTE + 'pessoa/remover/' + pessoaID)
             .then(response => {
+              window.location.reload();
               console.log(response)
             })
         }

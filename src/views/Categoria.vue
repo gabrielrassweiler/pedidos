@@ -53,14 +53,14 @@ export default {
     async removeCategoria(categoriaID) {
       if (confirm('Deseja remover a categoria de ID ' + categoriaID + ' ?')) {
         axios
-          .get('http://localhost:8083/categoria/remover/' + categoriaID)
+          .get(process.env.VUE_APP_BASE_ROUTE + 'categoria/remover/' + categoriaID)
           .then(response => {
+            window.location.reload();
             console.log(response)
           })
       }
     },
     async alteraCategoria(categoria) {
-      console.log(categoria)
       localStorage.setItem('alteraCategoria', JSON.stringify(categoria));
     }
   }
