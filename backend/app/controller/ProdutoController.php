@@ -1,87 +1,72 @@
 <?php
 
-//include_once '../bibliotecas/conexao.php';
+include_once '../backend/app/bibliotecas/conexao.php';
 
 class ProdutoController
 {
-//    private $conn;
+    private $conn;
 
     public function __construct()
     {
-//        $this->conn = new conexao();
+        $this->conn = new conexao();
     }
 
     public function listar()
     {
-        echo json_encode([
-            [
-                'id' => '1',
-                'categoria' => 1,
-                'titulo' => 'Gabriel',
-                'descricao' => 'Gabriel',
-                'valor' => 20,
-            ],
-            [
-                'id' => '2',
-                'categoria' => 2,
-                'titulo' => 'Fulle',
-                'descricao' => 'Vendendo o fulle',
-                'valor' => 0.01,
-            ]
-        ]);
+        $aRegistrosNomeados = [];
+        $aRegistros = $this->conn->getSelectTabela('produto');
+
+        if ($aRegistros[0]) {
+            foreach ($aRegistros[1] as $key => $aRegistro) {
+                // Busca a descricao da categoria
+                $aResult = $this->conn->getSelectRegistroFromCodigo('categoria', $aRegistro[1]);
+                if ($aResult[0]) {
+                    $sCategoria = $aRegistro[1] . ' - ' . $aResult[1][0][1];
+                } else {
+                    echo false;
+                    return;
+                }
+
+                // Nomeia posições
+                $aRegistrosNomeados[$key]['id'] = $aRegistro[0];
+                $aRegistrosNomeados[$key]['categoria'] = $sCategoria;
+                $aRegistrosNomeados[$key]['titulo'] = $aRegistro[2];
+                $aRegistrosNomeados[$key]['valor'] = $aRegistro[3];
+                $aRegistrosNomeados[$key]['descricao'] = $aRegistro[4];
+            }
+
+            echo json_encode($aRegistrosNomeados);
+            return;
+        }
+
+        echo false;
     }
 
-    public function remover($params)
+    public function remover($sId)
     {
-        $id = explode('=', $params)[1];
-        echo json_encode([true, 'removeu']);
+        $result = $this->conn->getDeleteRegistro('produto', $sId);
+        echo json_encode([$result[0], $result[1]]);
     }
 
     public function cadastrar($params)
     {
-        try {
-            if (!$params) {
-                echo json_encode([false, 'Nenhum dado para realizar a atualização da pessoa']);
-            }
-            $aParametrosQuery = $this->trataParamsUrl($params);
-
-            $result = $this->conn->executaSql("
-                INSERT INTO pessoa (nome, sexo, idade, cpf, email, telefone, cep) values (
-                    {$aParametrosQuery['nome']}, {$aParametrosQuery['sexo']}, {$aParametrosQuery['idade']},
-                    {$aParametrosQuery['cpf']}, {$aParametrosQuery['email']}, {$aParametrosQuery['telefone']},
-                    {$aParametrosQuery['cep']},
-                )
-            ");
-        } catch(PDOException $e) {
-            echo json_encode([true, 'ERROR SQL: ' . $e->getMessage()]);
+        if (!$params) {
+            echo json_encode([false, 'Nenhum dado para realizar a atualização do produto']);
         }
+        $aParametrosQuery = $this->trataParamsUrl($params);
 
-        echo json_encode([true, 'cadastrou']);
+        $result = $this->conn->getInsertRegistro('produto', $aParametrosQuery);
+        echo json_encode([true, 'Cadastrou']);
     }
 
     public function atualizar($params)
     {
-        try {
-            if (!$params) {
-                echo json_encode([false, 'Nenhum dado para realizar a atualização da pessoa']);
-            }
-            $aParametrosQuery = $this->trataParamsUrl($params);
-
-            $result = $this->conn->executaSql("
-                update pessoa set
-                    nome = {$aParametrosQuery['id']},
-                    sexo = {$aParametrosQuery['sexo']},
-                    idade = {$aParametrosQuery['idade']},
-                    cpf = {$aParametrosQuery['cpf']},
-                    email = {$aParametrosQuery['email']},
-                    telefone = {$aParametrosQuery['telefone']},
-                    cep = {$aParametrosQuery['cep']},
-                    where id = {$aParametrosQuery['id']}
-            ");
-        } catch(PDOException $e) {
-            echo json_encode([true, 'ERROR SQL: ' . $e->getMessage()]);
+        if (!$params) {
+            echo json_encode([false, 'Nenhum dado para realizar a atualização do produto']);
         }
+        $aParametrosQuery = $this->trataParamsUrl($params);
 
+        $result = $this->conn->getUpdateRegistro('produto', $aParametrosQuery);
         echo json_encode([true, 'atualizou']);
     }
 

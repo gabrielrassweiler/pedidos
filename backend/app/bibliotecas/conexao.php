@@ -83,11 +83,11 @@ class conexao {
                 break;
             case 'produto':
                 $sSql = "INSERT INTO {$sTabela} (categoria_id, titulo, valor, descricao) VALUES (
-                '". $aRegistros['categoria_id'] ."', '". $aRegistros['titulo'] ."', '". $aRegistros['valor'] ."', '". $aRegistros['descricao'] ."')";
+                '". $aRegistros['categoria'] ."', '". $aRegistros['titulo'] ."', '". $aRegistros['valor'] ."', '". $aRegistros['descricao'] ."')";
                 break;
             case 'venda':
                 $sSql = "INSERT INTO {$sTabela} (pessoa_id, produto_id, quantidade, situacao) VALUES (
-                '". $aRegistros['pessoa_id'] ."', '". $aRegistros['quantidade'] ."', '". $aRegistros['situacao'] ."')";
+                '". $aRegistros['pessoa'] ."', '". $aRegistros['produto'] ."', '". $aRegistros['quantidade'] ."', '". $aRegistros['situacao'] ."')";
                 break;
             case 'usuario':
                 $sSql = "INSERT INTO {$sTabela} (login, usuario) VALUES ('". $aRegistros['login'] ."', '". $aRegistros['usuario'] ."')";
