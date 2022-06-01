@@ -56,13 +56,13 @@ export default {
       return total.toFixed(2);
     },
     async confirmarPedido() {
-      const id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+      const id = Math.floor(Math.random() * 100);
 
       for (const produto of this.productsInBag) {
         const params = await this.montaParamsRequest(produto, id)
 
         await axios
-          .get(process.env.VUE_APP_BASE_ROUTE + '/venda/cadastrar/' + params)
+          .get(process.env.VUE_APP_BASE_ROUTE + 'venda/cadastrar/' + params)
           .then(response => {
             console.log(response)
           })
