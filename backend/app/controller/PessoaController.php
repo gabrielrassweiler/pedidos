@@ -1,6 +1,6 @@
 <?php
 
-//include_once '../bibliotecas/conexao.php';
+include_once '../backend/app/bibliotecas/conexao.php';
 
 class PessoaController
 {
@@ -8,38 +8,19 @@ class PessoaController
 
     public function __construct()
     {
-//        $this->conn = new conexao();
+        $this->conn = new conexao();
     }
 
     public function listar()
     {
-        echo json_encode([
-            [
-                'id' => '1',
-                'nome' => 'Gabriel',
-                'idade' => 20,
-                'cpf' => '11976432901',
-                'email' => 'gabriel_rassweiler@hotmail.com',
-                'sexo' => 'Masculino',
-                'cep' => '89163360',
-                'telefone' => '47998261867',
-            ],
-            [
-                'id' => '2',
-                'nome' => 'Julia',
-                'idade' => 19,
-                'cpf' => '11976432902',
-                'email' => 'julia@hotmail.com',
-                'sexo' => 'Feminino',
-                'cep' => '89163000',
-                'telefone' => '47988457232',
-            ]
-        ]);
+        $aRegistros = $this->conn->getSelectTabela('pessoa');
+        echo json_encode($aRegistros);
     }
 
     public function remover($params)
     {
         $id = explode('=', $params)[1];
+        $this->conn->getDeleteRegistro('pessoa', $id);
         echo json_encode([true, 'removeu']);
     }
 
@@ -51,13 +32,8 @@ class PessoaController
             }
             $aParametrosQuery = $this->trataParamsUrl($params);
 
-            $result = $this->conn->executaSql("
-                INSERT INTO pessoa (nome, sexo, idade, cpf, email, telefone, cep) values (
-                    {$aParametrosQuery['nome']}, {$aParametrosQuery['sexo']}, {$aParametrosQuery['idade']},
-                    {$aParametrosQuery['cpf']}, {$aParametrosQuery['email']}, {$aParametrosQuery['telefone']},
-                    {$aParametrosQuery['cep']},
-                )
-            ");
+            $result = $this->conn->getInsertRegistro('pessoa', $aParametrosQuery, count($aParametrosQuery));
+            echo json_encode($result);
         } catch(PDOException $e) {
             echo json_encode([true, 'ERROR SQL: ' . $e->getMessage()]);
         }

@@ -123,7 +123,7 @@
         const params = this.montaParamsRequest();
 
         axios
-          .get('http://localhost:8083/pessoa/cadastrar/' + params)
+          .get(process.env.VUE_APP_BASE_ROUTE + 'pessoa/cadastrar/' + params)
           .then(response => {
             console.log(response)
           })
@@ -136,7 +136,7 @@
         const params = await this.montaParamsRequest();
 
         axios
-          .get('http://localhost:8083/pessoa/atualizar/' + params)
+          .get(process.env.VUE_APP_BASE_ROUTE + 'pessoa/atualizar/' + params)
           .then(response => {
             console.log(response)
           })

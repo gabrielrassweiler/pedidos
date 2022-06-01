@@ -38,4 +38,41 @@ class conexao {
             echo json_encode([false, 'Falha ao buscar os dados']);
         }
     }
+
+    /**
+     * Busca todos os registros de acordo com a tabela passada como parametro.
+     */
+    public function getSelectTabela($sTabela){
+        $sSql = "SELECT * FROM {$sTabela}";
+        return $this->executaSql($sSql);
+    }
+
+    /**
+     * Deleta o registro de acordo com a tabela e chave passadas como paramêtro.
+     */
+    public function getDeleteRegistro($sTabela, $iCodigo) {
+        $sSql =  "DELETE FROM {$sTabela} WHERE id = {$iCodigo} ";
+        return $this->executaSql($sSql);
+    }
+
+    /**
+     * Busca os dados do registro de acordo com a tabela e chave passadas como paramêtro.
+     */
+    public function getSelectRegistroFromCodigo($sTabela, $iCodigo) {
+        $sSql =  "SELECT * FROM {$sTabela} WHERE id = {$iCodigo}";
+        return $this->executaSql($sSql);
+    }
+
+    public function getInsertRegistro($sTabela, $aParametros, $tamParametros){
+        $sSql = "INSERT INTO {$sTabela} (";
+
+        foreach ($aParametros as $parametro) {
+            $sSql .= "{$parametro}, ";
+        }
+        $sSql = substr($sSql, 0, -2);
+
+        foreach () {
+
+        }
+    }
 }

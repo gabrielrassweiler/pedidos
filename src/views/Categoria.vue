@@ -53,7 +53,7 @@ export default {
     async removeCategoria(categoriaID) {
       if (confirm('Deseja remover a categoria de ID ' + categoriaID + ' ?')) {
         axios
-          .get('http://localhost:8083/categoria/remover/' + categoriaID)
+          .get(process.env.VUE_APP_BASE_ROUTE + 'categoria/remover/' + categoriaID)
           .then(response => {
             console.log(response)
           })
