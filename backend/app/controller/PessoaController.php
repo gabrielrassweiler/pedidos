@@ -13,57 +13,54 @@ class PessoaController
 
     public function listar()
     {
+        $aRegistrosNomeados = [];
         $aRegistros = $this->conn->getSelectTabela('pessoa');
-        echo json_encode($aRegistros);
+
+        if ($aRegistros[0]) {
+            foreach ($aRegistros[1] as $key => $aRegistro) {
+                // Nomeia posições
+                $aRegistrosNomeados[$key]['id'] = $aRegistro[0];
+                $aRegistrosNomeados[$key]['nome'] = $aRegistro[1];
+                $aRegistrosNomeados[$key]['sexo'] = $aRegistro[2];
+                $aRegistrosNomeados[$key]['idade'] = $aRegistro[3];
+                $aRegistrosNomeados[$key]['cpf'] = $aRegistro[4];
+                $aRegistrosNomeados[$key]['email'] = $aRegistro[5];
+                $aRegistrosNomeados[$key]['telefone'] = $aRegistro[6];
+                $aRegistrosNomeados[$key]['cep'] = $aRegistro[7];
+            }
+
+            echo json_encode($aRegistrosNomeados);
+            return;
+        }
+
+        echo false;
     }
 
-    public function remover($params)
+    public function remover($sId)
     {
-        $id = explode('=', $params)[1];
-        $this->conn->getDeleteRegistro('pessoa', $id);
-        echo json_encode([true, 'removeu']);
+        $result = $this->conn->getDeleteRegistro('pessoa', $sId);
+        echo json_encode([$result[0], $result[1]]);
     }
 
     public function cadastrar($params)
     {
-        try {
-            if (!$params) {
-                echo json_encode([false, 'Nenhum dado para realizar a atualização da pessoa']);
-            }
-            $aParametrosQuery = $this->trataParamsUrl($params);
-
-            $result = $this->conn->getInsertRegistro('pessoa', $aParametrosQuery, count($aParametrosQuery));
-            echo json_encode($result);
-        } catch(PDOException $e) {
-            echo json_encode([true, 'ERROR SQL: ' . $e->getMessage()]);
+        if (!$params) {
+            echo json_encode([false, 'Nenhum dado para realizar a atualização da pessoa']);
         }
+        $aParametrosQuery = $this->trataParamsUrl($params);
 
-        echo json_encode([true, 'cadastrou']);
+        $result = $this->conn->getInsertRegistro('pessoa', $aParametrosQuery);
+        echo json_encode([true, 'Cadastrou']);
     }
 
     public function atualizar($params)
     {
-        try {
-            if (!$params) {
-                echo json_encode([false, 'Nenhum dado para realizar a atualização da pessoa']);
-            }
-            $aParametrosQuery = $this->trataParamsUrl($params);
-
-            $result = $this->conn->executaSql("
-                update pessoa set
-                    nome = {$aParametrosQuery['id']},
-                    sexo = {$aParametrosQuery['sexo']},
-                    idade = {$aParametrosQuery['idade']},
-                    cpf = {$aParametrosQuery['cpf']},
-                    email = {$aParametrosQuery['email']},
-                    telefone = {$aParametrosQuery['telefone']},
-                    cep = {$aParametrosQuery['cep']},
-                    where id = {$aParametrosQuery['id']}
-            ");
-        } catch(PDOException $e) {
-            echo json_encode([true, 'ERROR SQL: ' . $e->getMessage()]);
+        if (!$params) {
+            echo json_encode([false, 'Nenhum dado para realizar a atualização da pessoa']);
         }
+        $aParametrosQuery = $this->trataParamsUrl($params);
 
+        $result = $this->conn->getUpdateRegistro('pessoa', $aParametrosQuery);
         echo json_encode([true, 'atualizou']);
     }
 
