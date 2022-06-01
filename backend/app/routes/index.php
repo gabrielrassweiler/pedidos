@@ -15,4 +15,6 @@ $rota['/produto/cadastrar'] = 'ProdutoController@cadastrar';
 $rota['/produto/remover'] = 'ProdutoController@remover';
 $rota['/produto/atualizar'] = 'ProdutoController@atualizar';
 
+$rota['/venda/cadastrar'] = 'VendaController@venda';
+
 return $rota;

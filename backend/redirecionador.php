@@ -3,6 +3,7 @@
 include './app/controller/PessoaController.php';
 include './app/controller/CategoriaController.php';
 include './app/controller/ProdutoController.php';
+include './app/controller/VendaController.php';
 
 class redirecionador {
     private $rotasPermitidas;
@@ -28,6 +29,9 @@ class redirecionador {
                 break;
             case 'produto':
                 $this->produto($controllerRota);
+                break;
+            case 'venda':
+                $this->venda($controllerRota);
                 break;
         }
     }
@@ -76,12 +80,19 @@ class redirecionador {
         $this->redirecionaController($controller, $controllerRota);
     }
 
+    public function venda($controllerRota)
+    {
+        $controller = new VendaController();
+        $this->redirecionaController($controller, $controllerRota);
+    }
+
     public function redirecionaController($controller, $controllerRota)
     {
         switch ($controllerRota[2]) {
             case 'listar':
                 $controller->listar();
                 break;
+            case 'venda':
             case 'cadastrar':
                 $controller->cadastrar($controllerRota[3]);
                 break;

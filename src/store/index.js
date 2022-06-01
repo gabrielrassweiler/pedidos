@@ -24,6 +24,10 @@ export default createStore({
       state.productsInBag = state.productsInBag.filter(item => productId !== item.id);
       localStorage.setItem("productsInBag", JSON.stringify(state.productsInBag))
     },
+    removeAllFromBag(state) {
+      state.productsInBag = [];
+      localStorage.setItem("productsInBag", JSON.stringify([]))
+    },
     loadPerson (state, pessoas) {
       state.pessoas = pessoas;
     },
@@ -37,7 +41,7 @@ export default createStore({
   actions: {
     loadProducts({ commit }) {
       axios
-        .get('https://fakestoreapi.com/products')
+        .get(process.env.VUE_APP_BASE_ROUTE + 'produto')
         .then(response => {
           commit('loadProducts', response.data);
         })
@@ -54,6 +58,9 @@ export default createStore({
       if (confirm('Tem certeza que deseja remover o produto do carrinho?')) {
         commit('removeFromBag', productId);
       }
+    },
+    removeAllFromBag({ commit }) {
+      commit('removeAllFromBag');
     },
     loadPerson({ commit }) {
       axios
