@@ -86,7 +86,7 @@ class conexao {
                 '". $aRegistros['categoria'] ."', '". $aRegistros['titulo'] ."', '". $aRegistros['valor'] ."', '". $aRegistros['descricao'] ."')";
                 break;
             case 'venda':
-                $sSql = "INSERT INTO {$sTabela} (pessoa_id, produto_id, quantidade, situacao) VALUES (
+                $sSql = "INSERT INTO {$sTabela} (id, pessoa_id, produto_id, quantidade, situacao) VALUES ('". $aRegistros['id'] ."', 
                 '". $aRegistros['pessoa'] ."', '". $aRegistros['produto'] ."', '". $aRegistros['quantidade'] ."', '". $aRegistros['situacao'] ."')";
                 break;
             case 'usuario':

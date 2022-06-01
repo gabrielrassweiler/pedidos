@@ -7,10 +7,10 @@
         <div v-for="(product, index) in productsInBag" :key="index" class="item">
           <div class="remove" @click="this.$store.dispatch('removeFromBag', product.id)">Remover Produto</div>
           <div class="photo">
-            <img :src="product.image" alt="">
+            <img :src="product.imagem" alt="">
           </div>
           <div class="description">
-            {{product.title}}
+            {{product.titulo}}
           </div>
           <div class="price">
             <span class="quantity-area">
@@ -18,10 +18,16 @@
               <span class="quantity">{{product.quantity}}</span>
               <button @click="product.quantity++">+</button>
             </span>
-            <span class="amount">R$ {{ (product.price * product.quantity).toFixed(2) }}</span>
+            <span class="amount">R$ {{ (product.valor * product.quantity).toFixed(2) }}</span>
           </div>
         </div>
+
         <div class="grand-total"> Total do pedido: R$ {{orderTotal()}}</div>
+        <button
+          class="btn btn-success"
+          @click="confirmarPedido()"
+        >CONFIRMAR
+        </button>
 
       </template>
 
@@ -36,6 +42,7 @@
 <script>
 
 import { mapState } from 'vuex'
+import axios from "axios";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -44,10 +51,43 @@ export default {
     orderTotal() {
       let total = 0;
       this.productsInBag.forEach(item => {
-        total += item.price * item.quantity;
+        total += item.valor * item.quantity;
       });
       return total.toFixed(2);
-    }
+    },
+    async confirmarPedido() {
+      const id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+
+      for (const produto of this.productsInBag) {
+        const params = await this.montaParamsRequest(produto, id)
+
+        await axios
+          .get(process.env.VUE_APP_BASE_ROUTE + '/venda/cadastrar/' + params)
+          .then(response => {
+            console.log(response)
+          })
+      }
+
+      alert('Pedido confirmado com sucesso!');
+      this.$store.dispatch('removeAllFromBag');
+      location.href = '/'
+    },
+    async montaParamsRequest(produto, id) {
+      const params = {
+        id,
+        pessoa: 3,
+        produto: produto.id,
+        quantidade: produto.quantity,
+        valor: produto.valor,
+        situacao: 1
+      }
+
+      return Object.keys(params)
+        .map((key) => {
+          return key + '=' + params[key]
+        })
+        .join('&')
+    },
   },
   computed: mapState([
     'productsInBag'
@@ -122,10 +162,10 @@ export default {
       }
     }
     .grand-total {
-      font-size: 24px;
+      font-size: 23px;
       font-weight: bold;
-      text-align: right;
-      margin-top: 8px;
+      text-align: center;
+      margin: 10px 0;
     }
   }
 }

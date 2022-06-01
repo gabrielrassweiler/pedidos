@@ -33,6 +33,7 @@ class ProdutoController
                 $aRegistrosNomeados[$key]['titulo'] = $aRegistro[2];
                 $aRegistrosNomeados[$key]['valor'] = $aRegistro[3];
                 $aRegistrosNomeados[$key]['descricao'] = $aRegistro[4];
+                $aRegistrosNomeados[$key]['imagem'] = $aRegistro[5];
             }
 
             echo json_encode($aRegistrosNomeados);

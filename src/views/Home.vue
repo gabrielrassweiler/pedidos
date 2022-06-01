@@ -7,10 +7,10 @@
         class="product"
         :class="{ inBag : isInBag(product) }"
       >
-        <div class="product-image" :style="{backgroundImage: 'url(' + product.image + ')'}"></div>
+        <div class="product-image" :style="{backgroundImage: 'url(' + product.imagem + ')'}"></div>
 
-        <h4>{{product.title}}</h4>
-        <p class="price">R$ {{product.price.toFixed(2)}}</p>
+        <h4>{{product.titulo}}</h4>
+        <p class="price">R$ {{product.valor}}</p>
         <button v-if="!isInBag(product)" @click="addToBag(product)">Adicionar ao carrinho</button>
         <button
           v-else
